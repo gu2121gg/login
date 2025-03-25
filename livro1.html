@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>livro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #121212;
+            background-image: url('assets/background.png');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        #pdf-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background-color: rgba(18, 18, 18, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            animation: containerFadeIn 1.5s ease-in-out;
+            display: none;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        iframe:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100%;
+            }
+        }
+
+        @keyframes containerFadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+
+            #pdf-container {
+                height: 80vh;
+            }
+
+            iframe {
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #pdf-container {
+                height: 75vh;
+            }
+        }
+
+        #mensagem-pagamento {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="pdf-container">
+        <iframe id="pdf-frame" src="" frameborder="0"></iframe>
+    </div>
+    <div id="mensagem-pagamento" style="display: none;">
+        Você precisa ser um usuário pago para acessar este conteúdo.
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="js/livros.js"></script> <script>
+        const pdfContainer = document.getElementById('pdf-container');
+        const pdfFrame = document.getElementById('pdf-frame');
+        const mensagemPagamento = document.getElementById('mensagem-pagamento');
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                verificarStatusPagamento(user, exibirPDF); // Passa a função exibirPDF como callback
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        function exibirPDF() {
+            pdfContainer.style.display = 'block';
+            pdfFrame.src = "";
+            pdfFrame.onload = () => {
+            };
+        }
+    </script>
+</body>
+</html>
